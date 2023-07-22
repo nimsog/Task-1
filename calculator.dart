@@ -14,25 +14,29 @@ class Calculator {
 
 void main() {
   Calculator calculator = Calculator();
+  String operation;
 
   print('Calculator Application');
   print('Enter the operation (+, -, *, /) or "q" to quit.');
 
-  bool shouldQuit = false;
-
-  while (!shouldQuit) {
+  do {
     try {
-      String operation = readLine('Enter the operation: ');
+      operation = stdin.readLineSync()!.trim();
 
       if (operation == 'q') {
-        shouldQuit = true;
-        continue;
-      } else if (!isValidOperation(operation)) {
+        break;
+      } else if (operation != '+' &&
+          operation != '-' &&
+          operation != '*' &&
+          operation != '/') {
         throw FormatException('Invalid operation. Please try again.');
       }
 
-      double operand1 = readDouble('Enter the first operand: ');
-      double operand2 = readDouble('Enter the second operand: ');
+      print('Enter the first operand:');
+      double operand1 = double.parse(stdin.readLineSync()!);
+
+      print('Enter the second operand:');
+      double operand2 = double.parse(stdin.readLineSync()!);
 
       double result;
 
@@ -57,21 +61,9 @@ void main() {
     } catch (e) {
       print('Error: $e');
     }
-  }
+
+    print('Enter the next operation (+, -, *, /) or "q" to quit.');
+  } while (true);
 
   print('Calculator application has ended.');
-}
-
-String readLine(String prompt) {
-  stdout.write(prompt);
-  return stdin.readLineSync()!.trim();
-}
-
-double readDouble(String prompt) {
-  String input = readLine(prompt);
-  return double.parse(input);
-}
-
-bool isValidOperation(String operation) {
-  return ['+', '-', '*', '/'].contains(operation);
 }
